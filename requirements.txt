@@ -6,3 +6,29 @@ lxml==4.9.3
 Werkzeug==3.0.1
 gunicorn==21.2.0
 playwright-stealth==1.0.6
+
+# Additional useful packages for web scraping
+html5lib==1.1
+cssselect==1.2.0
+urllib3==2.1.0
+chardet==5.2.0
+
+# Performance and monitoring
+psutil==5.9.6
+memory-profiler==0.61.0
+
+# Better JSON handling
+orjson==3.9.10
+
+# Date/time parsing
+python-dateutil==2.8.2
+
+# Text processing
+nltk==3.8.1
+textstat==0.7.3
+
+# Image processing (for better screenshot handling)
+Pillow==10.1.0
+
+# Better error handling and logging
+structlog==23.2.0
