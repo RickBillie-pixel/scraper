@@ -6,6 +6,8 @@ services:
     healthCheckPath: /health
     envVars:
       - key: PLAYWRIGHT_BROWSERS_PATH
+        value: "/app/pw-browsers"
+      - key: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD
         value: "0"
       - key: PYTHONUNBUFFERED
         value: "1"
