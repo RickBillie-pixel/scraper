@@ -5,3 +5,4 @@ requests==2.31.0
 lxml==4.9.3
 Werkzeug==3.0.1
 gunicorn==21.2.0
+playwright-stealth==1.0.6
