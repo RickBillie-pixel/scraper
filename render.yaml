@@ -2,8 +2,11 @@ services:
   - type: web
     name: web-scraper-api
     runtime: docker
-    plan: starter  # Of standard voor meer performance
+    plan: standard  # Upgraded from starter for better performance with Playwright
     healthCheckPath: /health
+    maxShutdownDelaySeconds: 30
+    
+    # Environment variables
     envVars:
       - key: PLAYWRIGHT_BROWSERS_PATH
         value: "/app/pw-browsers"
@@ -11,7 +14,35 @@ services:
         value: "0"
       - key: PYTHONUNBUFFERED
         value: "1"
+      - key: PYTHONDONTWRITEBYTECODE
+        value: "1"
+      - key: FLASK_ENV
+        value: "production"
+      - key: WEB_CONCURRENCY
+        value: "1"
+      - key: MAX_WORKERS
+        value: "1"
+        
+    # Resource allocation
     disk:
       name: webscraper-disk
       mountPath: /tmp
-      sizeGB: 1
+      sizeGB: 2  # Increased for browser cache and temp files
+      
+    # Build configuration
+    buildCommand: echo "Building web scraper..."
+    
+    # Auto-deploy settings
+    autoDeploy: true
+    
+    # Custom headers for better security
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
