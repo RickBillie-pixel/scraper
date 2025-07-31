@@ -28,18 +28,27 @@ RUN apt-get update && apt-get install -y \
 # Set working directory
 WORKDIR /app
 
+# Set environment variables for Playwright
+ENV PLAYWRIGHT_BROWSERS_PATH=/app/pw-browsers
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=0
+
 # Copy requirements and install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install Playwright browsers
-RUN playwright install chromium
-RUN playwright install-deps chromium
+# Install Playwright browsers with explicit path
+RUN mkdir -p /app/pw-browsers
+RUN PLAYWRIGHT_BROWSERS_PATH=/app/pw-browsers playwright install chromium
+RUN PLAYWRIGHT_BROWSERS_PATH=/app/pw-browsers playwright install-deps chromium
+
+# Verify browser installation
+RUN ls -la /app/pw-browsers/
+RUN find /app/pw-browsers -name "chrome" -type f || echo "Chrome binary not found"
 
 # Copy application code
 COPY main.py .
 
-# Create non-root user
+# Create non-root user and fix permissions
 RUN groupadd -r scraper && useradd -r -g scraper scraper
 RUN chown -R scraper:scraper /app
 USER scraper
