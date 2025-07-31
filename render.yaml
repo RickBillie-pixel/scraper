@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: web-scraper-api
+    runtime: docker
+    plan: starter  # Of standard voor meer performance
+    buildCommand: docker build -t web-scraper .
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 1 --timeout 120 --preload main:app
+    healthCheckPath: /health
+    envVars:
+      - key: PLAYWRIGHT_BROWSERS_PATH
+        value: "0"
+      - key: PYTHONUNBUFFERED
+        value: "1"
+    disk:
+      name: webscraper-disk
+      mountPath: /tmp
+      sizeGB: 1
